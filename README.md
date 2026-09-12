@@ -93,3 +93,12 @@ Credentials live in `secrets.h` (gitignored) — copy `secrets.h.example` to
 (`DEVICE_NAME`, `DEVICE_FRIENDLY`, `FW_VERSION`) and hardware pins are
 constants directly in `smart_switch.ino`, not in `secrets.h` — edit those in
 the sketch itself if you're flashing a second unit under a different name.
+
+## Version History
+
+`FW_VERSION` is a constant directly in `smart_switch.ino` (not `secrets.h`),
+so it's git-tracked.
+
+| Version | Date | Changes |
+|---|---|---|
+| v1.1 | 2026-09-03 | Initial release. |
