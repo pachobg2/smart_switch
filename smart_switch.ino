@@ -285,6 +285,15 @@ void setup() {
   loadCounters();
   buildTopics();
 
+  // Printed on every boot (not just at portal-save time) so a plain power
+  // cycle is enough to see exactly what's saved -- useful for diagnosing a
+  // device that connects to WiFi but can't reach the MQTT broker, without
+  // having to re-enter Setup Mode just to read this back.
+  Serial.printf("[settings] device_id=%s wifi_ssid=%s mqtt=%s:%u configured=%s\n",
+                settings.deviceId.c_str(), settings.wifiSsid.c_str(),
+                settings.mqttHost.c_str(), settings.mqttPort,
+                settings.configured ? "yes" : "no");
+
   // A never-configured device goes straight to the portal -- no button
   // hold needed, same as door_sensor/TH_2_v4.
   if (!settings.configured) {
