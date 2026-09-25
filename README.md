@@ -106,6 +106,7 @@ defaults to `switch_<chip-id>` if never configured).
 | Connect fail count (resets on success) | `.../connect_fail_count/state` | integer |
 | Total fail count (lifetime) | `.../total_fail_count/state` | integer |
 | Firmware version | `.../firmware_version/state` | string |
+| Uptime (zeroes on any reset/power loss) | `.../uptime/state` | seconds |
 | OTA request/restart | `.../ota_restart/set` | any payload |
 
 On every MQTT connect the firmware publishes retained HA discovery configs
@@ -158,3 +159,4 @@ the setup portal (see "Setup Mode") and persisted in NVS.
 | v1.1 | 2026-09-03 | Initial release. |
 | v2.0.0 | 2026-09-22 | Ported the `door_sensor`/`TH_2_v4` runtime WiFiManager setup portal: WiFi/MQTT credentials and device identity moved out of `secrets.h` into NVS-persisted settings, configured through a web portal reached via a 10s button hold (5s in-portal hold for factory reset), same button-gesture convention as `TH_2_v4`. Split `mqtt_fail_count` into `connect_fail_count` (resets on next successful connect) and `total_fail_count` (lifetime, NVS-persisted); added `boot_count` and `firmware_version` diagnostic sensors. Breaking change — existing units need re-provisioning through the portal on first boot after this update. |
 | v2.0.1 | 2026-09-22 | Added a boot-time serial log line printing the current `device_id`/`wifi_ssid`/`mqtt` host:port/`configured` state on every boot (not just at portal-save time), so a plain power cycle is enough to check saved settings without re-entering Setup Mode — added while diagnosing a device that connects to WiFi but can't reach the MQTT broker (`TCP_DISCONNECTED`). |
+| v2.0.2 | 2026-09-25 | Added an `Uptime` diagnostic sensor (seconds since boot, `device_class: duration`). Uses `esp_timer_get_time()` (64-bit) rather than `millis()`, so it zeroes on any reboot or power loss but never wraps back to zero on its own at ~49.7 days. |
